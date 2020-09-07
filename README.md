@@ -2,10 +2,12 @@
 
 运行：
 `train-mock: node index`
+
 `train-ticket: npm run start`
 
 ## 多页面入口配置
 1. public 文件夹创建tickect.html
+
 2. config/paths.js
    `appTicketHtml: resolveApp('public/ticket.html'),`
    `appTicketJs: resolveModule(resolveApp, 'src/index/ticket'),`
@@ -116,10 +118,3 @@
       }),
     ```
 再次运 npm run build 即可编译成功。
-
-## 搭建Mock Server
-exporess
-
-## 代理
-package.json
-`"proxy": "http://localhost:5000",`
