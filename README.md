@@ -1,5 +1,9 @@
 线上地址：https://touch.train.qunar.com
 
+运行：
+`train-mock: node index`
+`train-ticket: npm run start`
+
 ## 多页面入口配置
 1. public 文件夹创建tickect.html
 2. config/paths.js
