@@ -1,13 +1,7 @@
 线上地址：https://touch.train.qunar.com
 
-运行：
-`train-mock: node index`
-
-`train-ticket: npm run start`
-
 ## 多页面入口配置
 1. public 文件夹创建tickect.html
-
 2. config/paths.js
    `appTicketHtml: resolveApp('public/ticket.html'),`
    `appTicketJs: resolveModule(resolveApp, 'src/index/ticket'),`
@@ -109,7 +103,7 @@
           const entrypointFiles = entrypoints.index.filter(
             fileName => !fileName.endsWith('.map')
           );
-
+    
           return {
             files: manifestFiles,
             entrypoints: entrypointFiles,
@@ -118,3 +112,16 @@
       }),
     ```
 再次运 npm run build 即可编译成功。
+
+
+6. 编译多个入口页面的工程
+```
+webpack.config.js
+
+output: {
+     ···
+      filename: isEnvProduction
+        ? 'static/js/[name].[contenthash:8].js'
+        : isEnvDevelopment && 'static/js/[name].js',
+    ···
+```
