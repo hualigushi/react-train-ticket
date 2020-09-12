@@ -75,21 +75,15 @@
     }),
    ```
 
-​       可以看到配置项中多了 generate 这一属性，其中就有用到 filter 方法。其中 `entrypoints.main` 调用了  
+     可以看到配置项中多了 generate 这一属性，其中就有用到 filter 方法。其中 `entrypoints.main` 调用了 filter 方法，经过输出得知 `entrypoints.main` 的值是与 entry 配置对应的。
 
-​       filter 方法，经过输出得知 `entrypoints.main` 的值是与 entry 配置对应的。
+     默认情况下 entry 的值是一个 Array，因此 `entrypoints.main` 的值也一个 Array，但是配置多页面时是把其改为了 Object，Object 没有 filter方法，因此报错。
 
-​       默认情况下 entry 的值是一个 Array，因此 `entrypoints.main` 的值也一个 Array，但是配置多页面时是把其
+     **解决方案**
 
-​       改为了 Object，Object 没有 filter方法，因此报错。
+      方案一：删除 generate属性，保持与老版本生成的 create-react-app 生成的 ManifestPlugin 配置一致。
 
-​    **解决方案**
-
-​      方案一：删除 generate属性，保持与老版本生成的 create-react-app 生成的 ManifestPlugin 配置一致。
-
-​     方案二：修改 `entrypoints.main` 中的 main 为你在 entry 中配置的项目首页的 key。我的 entry 配置中首页 
-
-​      的 key 为 index ，因此可改为 entrypoints.index。
+      方案二：修改 `entrypoints.main` 中的 main 为你在 entry 中配置的项目首页的 key。我的 entry 配置中首页 的 key 为 index ，因此可改为 entrypoints.index。
 
       ```
       new ManifestPlugin({
@@ -111,7 +105,7 @@
         },
       }),
     ```
-再次运 npm run build 即可编译成功。
+    再次运 npm run build 即可编译成功。
 
 
 6. 编译多个入口页面的工程
@@ -125,3 +119,18 @@ output: {
         : isEnvDevelopment && 'static/js/[name].js',
     ···
 ```
+
+# 知识点
+1. memo
+
+`import {memo} from 'react'` 对于无状态子组件，采用function的形式。便可以使用memo方法。进行子组件更新渲染的判断。 
+
+原理就是上述purecomponent效果一致； 
+
+`const Foo = memo( function Foo(props){ return {props.person.age} //也不会更新 })`
+
+2. useState怎么知道返回的是当前组件的count而不是其他组件的count
+
+因为 js是单线程的，因此当useState被调用时只可能在唯一一个组件的上下文中；
+
+3. setCount不改变count值（基础数据类型）时组件不会重新渲染。 复杂数据类型的某个数形变化或者 重新赋值一个相同结构的对象 ，都会重新渲染
