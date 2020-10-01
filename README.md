@@ -2,6 +2,11 @@
 
 `https://touch.train.qunar.com`
 
+## 运行
+
+`train-mock     node index`
+`train-ticket   npm start`
+
 ## 多页面入口配置
 
 1. public 文件夹创建tickect.html
@@ -178,6 +183,39 @@ output: {
 
 运行 `npm run format`
 
+## 性能分析
+
+`npm i webpack-bundle-analyzer -D`
+`config/webpack.config.js`
+```
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+plugins: [
+      process.env.GENERATE_BUNDLE_ANALYZER === 'true' && new BundleAnalyzerPlugin({
+        openAnalyzer: false,
+        analyzerMode: 'static'
+      }),
+]
+```
+`npm run build`
+
+## 开启serviceWorker
+
+根目录下新建`.eslintignore`
+```
+src/serviceWorker.js
+```
+
+`src/index/index.js`
+```
+import * as serviceWorker from '../serviceWorker'
+
+if('producton' === process.env.NODE_ENV){
+  serviceWorker.register()
+} else {
+  serviceWorker.unregister()
+}
+```
 
 # 知识点
 
