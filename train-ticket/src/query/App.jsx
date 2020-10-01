@@ -74,7 +74,7 @@ function App(props) {
     dispatch(setHighSpeed(highSpeed === "true"));
 
     dispatch(setSearchParsed(true));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!searchParsed) {
@@ -138,6 +138,7 @@ function App(props) {
     departTimeEnd,
     arriveTimeStart,
     arriveTimeEnd,
+    dispatch,
   ]);
 
   const onBack = useCallback(() => {
@@ -169,25 +170,25 @@ function App(props) {
       },
       dispatch
     );
-  }, []);
+  }, [dispatch]);
   if (!searchParsed) {
     return null;
   }
 
   return (
-    <div>
-      <div className="header-wrapper">
-        <Header title={`${from} - ${to}`} onBack={onBack} />
-      </div>
-      <Nav
+      <div>
+          <div className="header-wrapper">
+              <Header title={`${from} - ${to}`} onBack={onBack} />
+          </div>
+          <Nav
         date={departDate}
         isPrevDisabled={isPrevDisabled}
         isNextDisabled={isNextDisabled}
         prev={prev}
         next={next}
       />
-      <List list={trainList} />
-      <Bottom
+          <List list={trainList} />
+          <Bottom
         highSpeed={highSpeed}
         orderType={orderType}
         onlyTickets={onlyTickets}
@@ -206,7 +207,7 @@ function App(props) {
         arriveTimeEnd={arriveTimeEnd}
         {...bottomCbs}
       />
-    </div>
+      </div>
   );
 }
 export default connect(

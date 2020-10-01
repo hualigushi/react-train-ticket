@@ -1,7 +1,7 @@
 import React, { memo, useState, useRef, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import leftPad from "left-pad";
-import useWinSize from '../common/useWinSize'
+import useWinSize from "../common/useWinSize";
 import "./Slider.css";
 
 const Slider = memo(function Slider(props) {
@@ -13,7 +13,7 @@ const Slider = memo(function Slider(props) {
     onEndChanged,
   } = props;
 
-  const winSize = useWinSize()
+  const winSize = useWinSize();
 
   const startHandle = useRef();
   const endHandle = useRef();
@@ -24,20 +24,20 @@ const Slider = memo(function Slider(props) {
   const range = useRef();
   const rangeWidth = useRef();
 
-  const prevCurrentStartHours = useRef(currentStartHours)
-  const prevCurrentEndHours = useRef(currentEndHours)
+  const prevCurrentStartHours = useRef(currentStartHours);
+  const prevCurrentEndHours = useRef(currentEndHours);
 
   const [start, setStart] = useState(() => (currentStartHours / 24) * 100);
   const [end, setEnd] = useState(() => (currentEndHours / 24) * 100);
 
-  if(prevCurrentStartHours.current !== currentStartHours){
-    setStart(currentStartHours/24*100)
-    prevCurrentStartHours.current = currentStartHours
+  if (prevCurrentStartHours.current !== currentStartHours) {
+    setStart((currentStartHours / 24) * 100);
+    prevCurrentStartHours.current = currentStartHours;
   }
 
-  if(prevCurrentEndHours.current !== currentEndHours){
-    setEnd(currentEndHours/24*100)
-    prevCurrentEndHours.current = currentEndHours
+  if (prevCurrentEndHours.current !== currentEndHours) {
+    setEnd((currentEndHours / 24) * 100);
+    prevCurrentEndHours.current = currentEndHours;
   }
 
   const startPercent = useMemo(() => {
@@ -113,89 +113,63 @@ const Slider = memo(function Slider(props) {
   }, [winSize.width]);
 
   useEffect(() => {
-    startHandle.current.addEventListener(
-      "touchstart",
-      onStartTouchBegin,
-      false
-    );
-    startHandle.current.addEventListener(
-      "touchmove", 
-      onStartTouchMove, 
-      false
-      );
-    endHandle.current.addEventListener(
-      "touchstart", 
-      onEndTouchBegin, 
-      false
-      );
-    endHandle.current.addEventListener("touchmove", onEndTouchMove, false);
+    const sc = startHandle.current;
+    const ec = endHandle.current;
+    sc.addEventListener("touchstart", onStartTouchBegin, false);
+    sc.addEventListener("touchmove", onStartTouchMove, false);
+    ec.addEventListener("touchstart", onEndTouchBegin, false);
+    ec.addEventListener("touchmove", onEndTouchMove, false);
 
     return () => {
-      startHandle.current.removeEventListener(
-        "touchstart",
-        onStartTouchBegin,
-        false
-      );
-      startHandle.current.removeEventListener(
-        "touchmove",
-        onStartTouchMove,
-        false
-      );
-      endHandle.current.removeEventListener(
-        "touchstart",
-        onEndTouchBegin,
-        false
-      );
-      endHandle.current.removeEventListener(
-        "touchmove", 
-        onEndTouchMove, 
-        false
-        );
+      sc.removeEventListener("touchstart", onStartTouchBegin, false);
+      sc.removeEventListener("touchmove", onStartTouchMove, false);
+      ec.removeEventListener("touchstart", onEndTouchBegin, false);
+      ec.removeEventListener("touchmove", onEndTouchMove, false);
     };
   });
 
   useEffect(() => {
     onStartChanged(startHours);
-  }, [startHours]);
+  }, [onStartChanged, startHours]);
 
   useEffect(() => {
     onEndChanged(endHours);
-  }, [endHours]);
+  }, [endHours, onEndChanged]);
 
-   return (
-        <div className="option">
-            <h3>{title}</h3>
-            <div className="range-slider">
-                <div className="slider" ref={range}>
-                    <div
-                        className="slider-range"
-                        style={{
-                            left: startPercent + '%',
-                            width: endPercent - startPercent + '%',
-                        }}
-                    ></div>
-                    <i
-                        ref={startHandle}
-                        className="slider-handle"
-                        style={{
-                            left: startPercent + '%',
-                        }}
-                    >
-                        <span>{startText}</span>
-                    </i>
-                    <i
-                        ref={endHandle}
-                        className="slider-handle"
-                        style={{
-                            left: endPercent + '%',
-                        }}
-                    >
-                        <span>{endText}</span>
-                    </i>
-                </div>
-            </div>
-        </div>
-    );
+  return (
+      <div className="option">
+          <h3>{title}</h3>
+          <div className="range-slider">
+              <div className="slider" ref={range}>
+                  <div
+            className="slider-range"
+            style={{
+              left: startPercent + "%",
+              width: endPercent - startPercent + "%",
+            }}
+          ></div>
+                  <i
+            ref={startHandle}
+            className="slider-handle"
+            style={{
+              left: startPercent + "%",
+            }}
+          >
+                      <span>{startText}</span>
+                  </i>
+                  <i
+            ref={endHandle}
+            className="slider-handle"
+            style={{
+              left: endPercent + "%",
+            }}
+          >
+                      <span>{endText}</span>
+                  </i>
+              </div>
+          </div>
+      </div>
+  );
 });
 
 Slider.propTypes = {

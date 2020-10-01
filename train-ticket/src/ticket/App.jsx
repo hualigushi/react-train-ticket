@@ -61,7 +61,7 @@ function App(props) {
     dispatch(setDepartDate(h0(dayjs(date).valueOf())));
 
     dispatch(setSearchParsed(true));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     document.title = trainNumber;
@@ -94,7 +94,7 @@ function App(props) {
         dispatch(setDurationStr(durationStr));
         dispatch(setTickets(candidates));
       });
-  }, [searchParsed, departDate, trainNumber]);
+  }, [searchParsed, departDate, trainNumber, dispatch]);
 
   const { isPrevDisabled, isNextDisabled, prev, next } = useNav(
     departDate,
@@ -110,28 +110,28 @@ function App(props) {
       },
       dispatch
     );
-  }, []);
+  }, [dispatch]);
 
   if (!searchParsed) {
     return null;
   }
 
   return (
-    <div className="app">
-      <div className="header-wrapper">
-        <Header title={trainNumber} onBack={onBack} />
-      </div>
-      <div className="nav-wrapper">
-        <Nav
+      <div className="app">
+          <div className="header-wrapper">
+              <Header title={trainNumber} onBack={onBack} />
+          </div>
+          <div className="nav-wrapper">
+              <Nav
           date={departDate}
           isPrevDisabled={isPrevDisabled}
           isNextDisabled={isNextDisabled}
           prev={prev}
           next={next}
         />
-      </div>
-      <div className="detail-wrapper">
-        <Detail
+          </div>
+          <div className="detail-wrapper">
+              <Detail
           departDate={departDate}
           arriveDate={arriveDate}
           departTimeStr={departTimeStr}
@@ -141,37 +141,42 @@ function App(props) {
           arriveStation={arriveStation}
           durationStr={durationStr}
         >
-          <span className="left"></span>
-          <span
+                  <span className="left"></span>
+                  <span
             className="schedule"
             onClick={() => detailCbs.toggleIsScheduleVisible()}
           >
-            时刻表
-          </span>
-          <span className="right"></span>
-        </Detail>
-      </div>
-      {isScheduleVisible && (
-        <div
+                      时刻表
+                  </span>
+                  <span className="right"></span>
+              </Detail>
+          </div>
+          {isScheduleVisible && (
+          <div
           className="mask"
           onClick={() => dispatch(toggleIsScheduleVisible())}
         >
-          <Suspense fallback={<div>loading</div>}>
-            <Schedule
+              <Suspense fallback={<div>loading</div>}>
+                  <Schedule
               date={departDate}
               trainNumber={trainNumber}
               departStation={departStation}
               arriveStation={arriveStation}
             />
-          </Suspense>
-        </div>
+              </Suspense>
+          </div>
       )}
-      <TrainContext.Provider value={{
-        trainNumber, departStation,arriveStation,departDate
-      }}>
-        <Candidate tickets={tickets} />
-      </TrainContext.Provider>
-    </div>
+          <TrainContext.Provider
+        value={{
+          trainNumber,
+          departStation,
+          arriveStation,
+          departDate,
+        }}
+      >
+              <Candidate tickets={tickets} />
+          </TrainContext.Provider>
+      </div>
   );
 }
 export default connect(

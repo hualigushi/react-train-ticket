@@ -1,11 +1,15 @@
-线上地址：https://touch.train.qunar.com
+## 线上地址
+
+`https://touch.train.qunar.com`
 
 ## 多页面入口配置
+
 1. public 文件夹创建tickect.html
 2. config/paths.js
    `appTicketHtml: resolveApp('public/ticket.html'),`
    `appTicketJs: resolveModule(resolveApp, 'src/index/ticket'),`
 3. config/webpack.config.js
+
    ```
    entry: {
       index: [paths.appIndexJs, isEnvDevelopment && require.resolve('react-dev-utils/webpackHotDevClient')].filter(Boolean),
@@ -119,8 +123,64 @@ output: {
         : isEnvDevelopment && 'static/js/[name].js',
     ···
 ```
+## 代码格式化
+
+`npm i husky lint-staged -D`
+`npm i prettier -D`
+
+`package.json`
+
+```
+"scripts": {
+    "format": "prettier src/**/*.{js,jsx,css,md} --write && eslint src/**/*.{jsx,js} --fix"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "eslint:recommended"
+    ],
+    "plugins": [
+      "react-hooks"
+    ],
+    "rules": {
+      "react/jsx-indent": [
+        "error",
+        4
+      ],
+      "react-hooks/rules-of-hooks": "error"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{jsx,js}": [
+      "prettier -- write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{css, md}":[
+      "prettier -- write",
+      "git add"
+    ]
+  },
+  ```
+  根目录下新建`prettier.config.js`
+  ```
+  module.exports = {
+    tabWidth: 4,
+    singleQuote: true,
+    trailingComma: 'es5',
+};
+```
+
+运行 `npm run format`
+
 
 # 知识点
+
 1. memo
 
 `import {memo} from 'react'` 对于无状态子组件，采用function的形式。便可以使用memo方法。进行子组件更新渲染的判断。 

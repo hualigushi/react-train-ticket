@@ -1,55 +1,46 @@
 import React, { memo } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import {h0} from '../common/fp'
+import { h0 } from "../common/fp";
 import Header from "./Header";
 import "./DateSelector.css";
 
 const Day = memo(function Day(props) {
-    const {
-        day,
-        onSelect
-    } = props
+  const { day, onSelect } = props;
 
-    if(!day) {
-        return (
-            <td className="null"></td>
-        )
-    }
+  if (!day) {
+    return <td className="null"></td>;
+  }
 
-    const classes=[]
-    const now = h0()
-    if(day < now) {
-        classes.push('disabled')
-    }
+  const classes = [];
+  const now = h0();
+  if (day < now) {
+    classes.push("disabled");
+  }
 
-    if([6,0].includes(new Date(day).getDay())) {
-        classes.push('weekend')
-    }
+  if ([6, 0].includes(new Date(day).getDay())) {
+    classes.push("weekend");
+  }
 
-    const dateString = now === day ? '今天' : new Date(day).getDate()
-    return (
-        <td className={classnames(classes)} onClick={() => onSelect(day)}>
-            {dateString}
-        </td>
-    )
-})
+  const dateString = now === day ? "今天" : new Date(day).getDate();
+  return (
+      <td className={classnames(classes)} onClick={() => onSelect(day)}>
+          {dateString}
+      </td>
+  );
+});
 Day.propTypes = {
-    day: PropTypes.number,
-    onSelect: PropTypes.func.isRequired,
-  };
+  day: PropTypes.number,
+  onSelect: PropTypes.func.isRequired,
+};
 
 const Week = memo(function Week(props) {
   const { days, onSelect } = props;
   return (
       <tr className="date-table-days">
-          {
-              days.map((day, idx) => {
-                  return (
-                      <Day key={idx} day={day} onSelect={onSelect}/>
-                  )
-              })
-          }
+          {days.map((day, idx) => {
+        return <Day key={idx} day={day} onSelect={onSelect} />;
+      })}
       </tr>
   );
 });
@@ -85,31 +76,31 @@ const Month = memo(function Month(props) {
   }
 
   return (
-    <table className="date-table">
-      <thead>
-        <tr>
-          <td colSpan="7">
-            <h5>
-              {startDay.getFullYear()}年{startDay.getMonth() + 1}月
-            </h5>
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr className="data-table-weeks">
-          <th>周一</th>
-          <th>周二</th>
-          <th>周三</th>
-          <th>周四</th>
-          <th>周五</th>
-          <th className="weekend">周六</th>
-          <th className="weekend">周日</th>
-        </tr>
-        {weeks.map((week, idx) => {
+      <table className="date-table">
+          <thead>
+              <tr>
+                  <td colSpan="7">
+                      <h5>
+                          {startDay.getFullYear()}年{startDay.getMonth() + 1}月
+                      </h5>
+                  </td>
+              </tr>
+          </thead>
+          <tbody>
+              <tr className="data-table-weeks">
+                  <th>周一</th>
+                  <th>周二</th>
+                  <th>周三</th>
+                  <th>周四</th>
+                  <th>周五</th>
+                  <th className="weekend">周六</th>
+                  <th className="weekend">周日</th>
+              </tr>
+              {weeks.map((week, idx) => {
           return <Week key={idx} days={week} onSelect={onSelect} />;
         })}
-      </tbody>
-    </table>
+          </tbody>
+      </table>
   );
 });
 
@@ -137,20 +128,20 @@ export default function DateSelector(props) {
   monthSequence.push(now.getTime());
 
   return (
-    <div className={classnames("date-selector", { hidden: !show })}>
-      <Header title="日期选择" onBack={onBack} />
-      <div className="date-selector-tables">
-        {monthSequence.map((month) => {
+      <div className={classnames("date-selector", { hidden: !show })}>
+          <Header title="日期选择" onBack={onBack} />
+          <div className="date-selector-tables">
+              {monthSequence.map((month) => {
           return (
-            <Month
+              <Month
               key={month}
               startingTimeInMonth={month}
               onSelect={onSelect}
             />
           );
         })}
+          </div>
       </div>
-    </div>
   );
 }
 

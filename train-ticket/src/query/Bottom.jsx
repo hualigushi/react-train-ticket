@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo, useCallback, useReducer } from "react";
+import React, { memo, useState, useMemo, useReducer } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
@@ -31,9 +31,12 @@ function checkedReducer(state, action) {
 const Filter = memo(function Filter(props) {
   const { name, checked, dispatch, value } = props;
   return (
-    <li className={classnames({ checked })} onClick={() => dispatch({ payload: value, type: 'toggle' })}>
-      {name}
-    </li>
+      <li
+      className={classnames({ checked })}
+      onClick={() => dispatch({ payload: value, type: "toggle" })}
+    >
+          {name}
+      </li>
   );
 });
 Filter.propTypes = {
@@ -47,12 +50,12 @@ const Option = memo(function Option(props) {
   const { title, options, checkedMap, dispatch } = props;
 
   return (
-    <div className="option">
-      <h3>{title}</h3>
-      <ul>
-        {options.map((option) => {
+      <div className="option">
+          <h3>{title}</h3>
+          <ul>
+              {options.map((option) => {
           return (
-            <Filter
+              <Filter
               {...option}
               checked={option.value in checkedMap}
               key={option.value}
@@ -60,8 +63,8 @@ const Option = memo(function Option(props) {
             />
           );
         })}
-      </ul>
-    </div>
+          </ul>
+      </div>
   );
 });
 Option.propTypes = {
@@ -231,44 +234,44 @@ const BottomModal = memo(function BottomModal(props) {
   }
 
   return (
-    <div className="bottom-modal">
-      <div className="bottom-dialog">
-        <div className="bottom-dialog-content">
-          <div className="title">
-            <span
+      <div className="bottom-modal">
+          <div className="bottom-dialog">
+              <div className="bottom-dialog-content">
+                  <div className="title">
+                      <span
               className={classnames("reset", {
                 disabled: isResetDisabled,
               })}
               onClick={reset}
             >
-              重置
-            </span>
-            <span className="ok" onClick={sure}>
-              确定
-            </span>
-          </div>
-          <div className="options">
-            {optionGroup.map((group) => (
-              <Option key={group.title} {...group} />
+                          重置
+                      </span>
+                      <span className="ok" onClick={sure}>
+                          确定
+                      </span>
+                  </div>
+                  <div className="options">
+                      {optionGroup.map((group) => (
+                          <Option key={group.title} {...group} />
             ))}
-            <Slider
+                      <Slider
               title="出发时间"
               currentStartHours={localDepartTimeStart}
               currentEndHours={localDepartTimeEnd}
               onStartChanged={setLocalDepartTimeStart}
               onEndChanged={setLocalDepartTimeEnd}
             />
-            <Slider
+                      <Slider
               title="到达时间"
               currentStartHours={localArriveTimeStart}
               currentEndHours={localArriveTimeEnd}
               onStartChanged={setLocalArriveTimeStart}
               onEndChanged={setLocalArriveTimeEnd}
             />
+                  </div>
+              </div>
           </div>
-        </div>
       </div>
-    </div>
   );
 });
 
@@ -352,38 +355,38 @@ export default function Bottom(props) {
   ]);
 
   return (
-    <div className="bottom">
-      <div className="bottom-filters">
-        <span className="item" onClick={toggleOrderType}>
-          <i className="icon">&#xf065;</i>
-          {orderType === ORDER_DEPART ? "出发 早-晚" : "耗时 短-长"}
-        </span>
-        <span
+      <div className="bottom">
+          <div className="bottom-filters">
+              <span className="item" onClick={toggleOrderType}>
+                  <i className="icon">&#xf065;</i>
+                  {orderType === ORDER_DEPART ? "出发 早-晚" : "耗时 短-长"}
+              </span>
+              <span
           className={classnames("item", { "item-on": highSpeed })}
           onClick={toggleHighSpeed}
         >
-          <i className="icon"> {highSpeed ? "\uf43f" : "\uf43e"}</i>
-          只看高铁动车
-        </span>
-        <span
+                  <i className="icon"> {highSpeed ? "\uf43f" : "\uf43e"}</i>
+                  只看高铁动车
+              </span>
+              <span
           className={classnames("item", { "item-on": onlyTickets })}
           onClick={toggleOnlyTickets}
         >
-          <i className="icon"> {highSpeed ? "\uf43d" : "\uf43c"}</i>
-          只看有票
-        </span>
-        <span
+                  <i className="icon"> {highSpeed ? "\uf43d" : "\uf43c"}</i>
+                  只看有票
+              </span>
+              <span
           className={classnames("item", {
             "item-on": isFiltersVisible || !noChecked,
           })}
           onClick={toggleIsFiltersVisible}
         >
-          <i className="icon"> {noChecked ? "\uf0f7" : "\uf446"}</i>
-          综合筛选
-        </span>
-      </div>
-      {isFiltersVisible && (
-        <BottomModal
+                  <i className="icon"> {noChecked ? "\uf0f7" : "\uf446"}</i>
+                  综合筛选
+              </span>
+          </div>
+          {isFiltersVisible && (
+          <BottomModal
           ticketTypes={ticketTypes}
           trainTypes={trainTypes}
           departStations={departStations}
@@ -407,7 +410,7 @@ export default function Bottom(props) {
           toggleIsFiltersVisible={toggleIsFiltersVisible}
         />
       )}
-    </div>
+      </div>
   );
 }
 Bottom.propTypes = {

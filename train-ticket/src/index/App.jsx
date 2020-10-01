@@ -49,7 +49,7 @@ function App(props) {
       },
       dispatch
     );
-  }, []);
+  }, [dispatch]);
 
   const citySelectorCbs = useMemo(() => {
     return bindActionCreators(
@@ -60,7 +60,7 @@ function App(props) {
       },
       dispatch
     );
-  }, []);
+  }, [dispatch]);
 
   const departDateCbs = useMemo(() => {
     return bindActionCreators(
@@ -69,7 +69,7 @@ function App(props) {
       },
       dispatch
     );
-  }, []);
+  }, [dispatch]);
 
   const dateSelectorCbs = useMemo(() => {
     return bindActionCreators(
@@ -78,7 +78,7 @@ function App(props) {
       },
       dispatch
     );
-  }, []);
+  }, [dispatch]);
 
   const highSpeedCbs = useMemo(() => {
     return bindActionCreators(
@@ -87,44 +87,47 @@ function App(props) {
       },
       dispatch
     );
-  }, []);
+  }, [dispatch]);
 
-  const onSelectDate = useCallback((day) => {
-    if (!day) {
-      return;
-    }
+  const onSelectDate = useCallback(
+    (day) => {
+      if (!day) {
+        return;
+      }
 
-    if (day < h0) {
-      return;
-    }
+      if (day < h0) {
+        return;
+      }
 
-    dispatch(setDepartDate(day));
-    dispatch(hideDateSelector());
-  }, []);
+      dispatch(setDepartDate(day));
+      dispatch(hideDateSelector());
+    },
+    [dispatch]
+  );
 
   return (
-    <div>
-      <div className="header-wrapper">
-        <Header title="火车票" onBack={onBack} />
-      </div>
-      <form action="./query.html" className="form">
-        <Journey from={from} to={to} {...cbs} />
-        <DepartDate time={departDate} {...departDateCbs} />
-        <HighSpeed {...highSpeedCbs} highSpeed={highSpeed} />
-        <Submit />
-      </form>
-      <CitySelector
+      <div>
+          <div className="header-wrapper">
+              <Header title="火车票" onBack={onBack} />
+          </div>
+          <form action="./query.html" className="form">
+              <Journey from={from} to={to} {...cbs} />
+              <DepartDate time={departDate} {...departDateCbs} />
+              <HighSpeed {...highSpeedCbs} highSpeed={highSpeed} />
+              <Submit />
+          </form>
+          <CitySelector
         show={isCitySelectorVisible}
         cityData={cityData}
         isLoading={isLoadingCityData}
         {...citySelectorCbs}
       />
-      <DateSelector
+          <DateSelector
         onSelect={onSelectDate}
         show={isDateSelectorVisible}
         {...dateSelectorCbs}
       />
-    </div>
+      </div>
   );
 }
 export default connect(
