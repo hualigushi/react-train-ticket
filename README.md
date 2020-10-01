@@ -5,6 +5,7 @@
 ## 运行
 
 `train-mock     node index`
+
 `train-ticket   npm start`
 
 ## 多页面入口配置
